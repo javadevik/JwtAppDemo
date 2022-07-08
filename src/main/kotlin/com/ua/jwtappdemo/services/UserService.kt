@@ -8,7 +8,7 @@ interface UserService {
 
     fun findById(userId: Long): UserEntity?
 
-    fun findByUsername(username: String): UserEntity
+    fun findByUsername(username: String): UserEntity?
 
     fun findAll(): List<UserEntity>
 

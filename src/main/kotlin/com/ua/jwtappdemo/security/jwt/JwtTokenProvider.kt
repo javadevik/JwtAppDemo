@@ -1,5 +1,6 @@
 package com.ua.jwtappdemo.security.jwt
 
+import com.ua.jwtappdemo.entities.UserEntity
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -25,7 +26,10 @@ class JwtTokenProvider(
         secret = Base64.getEncoder().encodeToString(secret.toByteArray())
     }
 
-    fun createToken(username: String, password: String): String {
+    fun createToken(user: UserEntity): String {
+        val username = user.username
+        val password = user.password
+
         val claims = Jwts.claims().setSubject(username)
         claims["password"] = password
 

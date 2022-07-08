@@ -26,7 +26,7 @@ class UserServiceImpl (
         return userRepository.findByIdOrNull(userId)
     }
 
-    override fun findByUsername(username: String): UserEntity {
+    override fun findByUsername(username: String): UserEntity? {
         return userRepository.findUserByUsername(username)
     }
 
