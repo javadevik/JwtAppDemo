@@ -1,8 +1,9 @@
 package com.ua.jwtappdemo.repositories
 
-import com.ua.jwtappdemo.entities.User
+import com.ua.jwtappdemo.entities.UserEntity
 import org.springframework.data.repository.CrudRepository
 
-interface UserRepository : CrudRepository<User, Long> {
-    fun findUserByUsername(username: String): User
+interface UserRepository : CrudRepository<UserEntity, Long> {
+    fun findUserByUsername(username: String): UserEntity
+    override fun findAll(): List<UserEntity>
 }

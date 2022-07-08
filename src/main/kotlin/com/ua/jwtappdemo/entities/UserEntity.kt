@@ -4,7 +4,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-class User(
+class UserEntity(
 
     var username: String,
 
@@ -14,12 +14,12 @@ class User(
 
     var email: String,
 
-    var password: Array<Char>,
+    var password: String,
 
     @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = arrayOf(JoinColumn(name = "user_id")))
     @Enumerated(EnumType.STRING)
-    private var roles: Set<Role>,
+    var roles: Set<Role>,
 
     id: Long,
     dateCreated: Long,
@@ -31,7 +31,7 @@ class User(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as User
+        other as UserEntity
 
         if (username != other.username) return false
         if (firstName != other.firstName) return false
@@ -48,7 +48,7 @@ class User(
         result = 31 * result + firstName.hashCode()
         result = 31 * result + lastName.hashCode()
         result = 31 * result + email.hashCode()
-        result = 31 * result + password.contentHashCode()
+        result = 31 * result + password.hashCode()
         result = 31 * result + roles.hashCode()
         return result
     }
