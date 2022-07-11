@@ -1,5 +1,6 @@
 package com.ua.jwtappdemo.security.jwt
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
@@ -11,34 +12,38 @@ class JwtUser(
     private val email: String,
     private val password: String,
     private val enabled: Boolean,
-    private val lastPasswordResetDate: Long,
-    private val authorities: Collection<out GrantedAuthority>?
+    private val lastPasswordResetDate: Long?,
+    private val authorities: Set<out GrantedAuthority>?
 ) : UserDetails {
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        TODO("Not yet implemented")
+    override fun getAuthorities(): Set<out GrantedAuthority>? {
+        return authorities
     }
 
     override fun getPassword(): String {
-        TODO("Not yet implemented")
+        return password
     }
 
     override fun getUsername(): String {
-        TODO("Not yet implemented")
+        return username
     }
 
+    @JsonIgnore
     override fun isAccountNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
+    @JsonIgnore
     override fun isAccountNonLocked(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
+    @JsonIgnore
     override fun isCredentialsNonExpired(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 
+    @JsonIgnore
     override fun isEnabled(): Boolean {
-        TODO("Not yet implemented")
+        return true
     }
 }

@@ -15,15 +15,6 @@ import java.time.Clock
 class JwtConfig(
     private val jwtTokenProvider: JwtTokenProvider
 ) : SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>() {
-    @Bean
-    fun passwordEncoder(): BCryptPasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
-
-    @Bean
-    fun clock(): Clock {
-        return Clock.systemDefaultZone()
-    }
 
     override fun configure(httpSecurity: HttpSecurity) {
         val jwtTokenFilter = JwtTokenFilter(jwtTokenProvider)

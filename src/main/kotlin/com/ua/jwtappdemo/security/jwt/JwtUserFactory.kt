@@ -5,6 +5,7 @@ import com.ua.jwtappdemo.entities.Status
 import com.ua.jwtappdemo.entities.UserEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import java.util.stream.Collectors
 import kotlin.streams.toList
 
 class JwtUserFactory {
@@ -21,8 +22,8 @@ class JwtUserFactory {
             )
         }
 
-        private fun toListOfGrantedAuthorities(userRoles: Set<Role>): List<GrantedAuthority> {
-            return userRoles.stream().map { role -> SimpleGrantedAuthority(role.name) }.toList()
+        private fun toListOfGrantedAuthorities(userRoles: Set<Role>): Set<GrantedAuthority> {
+            return userRoles.stream().map { role -> SimpleGrantedAuthority(role.name) }.collect(Collectors.toSet())
         }
     }
 }

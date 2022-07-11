@@ -14,7 +14,7 @@ open class BaseEntity(
     open var dateCreated: Long,
 
     @LastModifiedDate
-    open var dateUpdated: Long,
+    open var dateUpdated: Long?,
 
     @Enumerated(EnumType.STRING)
     open var status: Status

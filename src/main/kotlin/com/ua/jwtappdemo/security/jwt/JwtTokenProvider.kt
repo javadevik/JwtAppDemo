@@ -55,16 +55,20 @@ class JwtTokenProvider(
 
     fun resolveToken(request: HttpServletRequest): String? {
         val bearerToken = request.getHeader("Authorization")
-        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+        if (bearerToken != null && bearerToken.isNotEmpty() && bearerToken.startsWith("Bearer_")) {
             return bearerToken.substring(7, bearerToken.length)
         }
         return null
     }
 
     fun validateToken(token: String?): Boolean {
+
+        if (token == null)
+            return false
+
         val claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
 
-        if (token == null || claims.body.expiration.before(Date())) {
+        if (claims.body.expiration.before(Date())) {
             return false
         }
 
