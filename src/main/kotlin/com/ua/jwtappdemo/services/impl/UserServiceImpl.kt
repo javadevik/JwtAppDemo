@@ -19,7 +19,7 @@ class UserServiceImpl (
         with(user) {
             password = passwordEncoder.encode(password)
             status = Status.ACTIVE
-            roles = mutableSetOf(Role.USER)
+            roles = mutableSetOf(Role.ROLE_USER)
         }
         return userRepository.save(user)
     }
