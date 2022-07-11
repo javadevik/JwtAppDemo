@@ -1,7 +1,6 @@
 package com.ua.jwtappdemo.security.jwt
 
 import com.ua.jwtappdemo.entities.UserEntity
-import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.core.Authentication;
@@ -28,10 +27,8 @@ class JwtTokenProvider(
 
     fun createToken(user: UserEntity): String {
         val username = user.username
-        val password = user.password
 
         val claims = Jwts.claims().setSubject(username)
-        claims["password"] = password
 
         val nowTime = clock.millis()
         val validity = nowTime + 3600000
@@ -50,7 +47,7 @@ class JwtTokenProvider(
     }
 
     fun getUsername(token: String): String {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJwt(token).body.subject
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body.subject
     }
 
     fun resolveToken(request: HttpServletRequest): String? {
@@ -62,7 +59,6 @@ class JwtTokenProvider(
     }
 
     fun validateToken(token: String?): Boolean {
-
         if (token == null)
             return false
 

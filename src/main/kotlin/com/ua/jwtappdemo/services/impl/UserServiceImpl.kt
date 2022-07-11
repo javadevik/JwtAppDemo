@@ -1,5 +1,6 @@
 package com.ua.jwtappdemo.services.impl
 
+import com.ua.jwtappdemo.entities.Role
 import com.ua.jwtappdemo.entities.Status
 import com.ua.jwtappdemo.entities.UserEntity
 import com.ua.jwtappdemo.repositories.UserRepository
@@ -18,6 +19,7 @@ class UserServiceImpl (
         with(user) {
             password = passwordEncoder.encode(password)
             status = Status.ACTIVE
+            roles = mutableSetOf(Role.USER)
         }
         return userRepository.save(user)
     }

@@ -2,6 +2,8 @@ package com.ua.jwtappdemo.controllers
 
 import com.ua.jwtappdemo.dto.AuthenticationRequestDto
 import com.ua.jwtappdemo.dto.AuthenticationResponseDto
+import com.ua.jwtappdemo.dto.RegistrationResponseDto
+import com.ua.jwtappdemo.entities.UserEntity
 import com.ua.jwtappdemo.security.jwt.JwtTokenProvider
 import com.ua.jwtappdemo.services.UserService
 import org.springframework.http.HttpStatus
@@ -33,5 +35,12 @@ class AuthenticationController(
         val responseDto = AuthenticationResponseDto(recUsername, token)
 
         return ResponseEntity(responseDto, HttpStatus.OK)
+    }
+
+    @PostMapping("/registration")
+    fun registration(@RequestBody userEntity: UserEntity): ResponseEntity<RegistrationResponseDto> {
+        val userSaved = userService.save(userEntity)
+        val registrationResponse = RegistrationResponseDto.toDto(userSaved)
+        return ResponseEntity(registrationResponse, HttpStatus.OK)
     }
 }

@@ -19,12 +19,12 @@ class UserEntity(
     @ElementCollection(targetClass = Role::class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = arrayOf(JoinColumn(name = "user_id")))
     @Enumerated(EnumType.STRING)
-    var roles: Set<Role>,
+    var roles: Set<Role>?,
 
     id: Long,
     dateCreated: Long,
     dateUpdated: Long,
-    status: Status
+    status: Status?
 
 ) : BaseEntity(id, dateCreated, dateUpdated, status) {
     override fun equals(other: Any?): Boolean {
