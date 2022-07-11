@@ -16,7 +16,7 @@ class UserController(
     val userService: UserService
 ) {
     @Secured("ROLE_USER")
-    @GetMapping("/{userId}")
+    @GetMapping("/user/{userId}")
     fun getUserById(@PathVariable("userId") userId: Long): ResponseEntity<UserDto> {
         val userFound = userService.findById(userId) ?: return ResponseEntity(HttpStatus.NO_CONTENT)
         val userFoundDto = UserDto.toDto(userFound)

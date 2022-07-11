@@ -3,6 +3,7 @@ package com.ua.jwtappdemo.dto
 import com.ua.jwtappdemo.entities.Role
 import com.ua.jwtappdemo.entities.Status
 import com.ua.jwtappdemo.entities.UserEntity
+import java.util.*
 
 class AdminDto(
     val id: Long,

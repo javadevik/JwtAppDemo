@@ -1,5 +1,6 @@
 package com.ua.jwtappdemo.entities
 
+import java.util.*
 import javax.persistence.*
 
 @Entity
