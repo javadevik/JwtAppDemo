@@ -20,6 +20,7 @@ class JwtUser(
         return authorities
     }
 
+    @JsonIgnore
     override fun getPassword(): String {
         return password
     }

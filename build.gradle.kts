@@ -16,6 +16,9 @@ repositories {
 	mavenCentral()
 }
 
+val testcontainersVersion = "1.15.3"
+val postgresVersion="42.2.14"
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
@@ -31,6 +34,10 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
+	testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
+	testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
+	testImplementation("org.springframework.boot:spring-boot-starter-webflux")
 }
 
 tasks.withType<KotlinCompile> {
