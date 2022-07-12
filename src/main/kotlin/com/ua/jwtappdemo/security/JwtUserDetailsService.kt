@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class JwtUserDetailsService(
-    private val userService: UserService
+        private val userService: UserService
 ) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails? {
         val user = userService.findByUsername(username) ?: return null

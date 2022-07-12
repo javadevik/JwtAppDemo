@@ -15,10 +15,10 @@ import javax.servlet.http.HttpServletRequest
 
 @Component
 class JwtTokenProvider(
-    @Value("\${jwt.security.secret}")
-    private var secret: String,
-    private val clock: Clock,
-    private val userDetailsService: UserDetailsService
+        @Value("\${jwt.security.secret}")
+        private var secret: String,
+        private val clock: Clock,
+        private val userDetailsService: UserDetailsService
 ) {
     @PostConstruct
     protected fun init() {
@@ -34,11 +34,11 @@ class JwtTokenProvider(
         val validity = nowTime + 3600000
 
         return Jwts.builder()
-            .setClaims(claims)
-            .setIssuedAt(Date(nowTime))
-            .setExpiration(Date(validity))
-            .signWith(SignatureAlgorithm.HS256, secret)
-            .compact()
+                .setClaims(claims)
+                .setIssuedAt(Date(nowTime))
+                .setExpiration(Date(validity))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact()
     }
 
     fun getAuthentication(token: String): Authentication {
