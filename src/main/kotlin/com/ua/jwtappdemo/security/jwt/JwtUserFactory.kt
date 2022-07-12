@@ -12,7 +12,6 @@ class JwtUserFactory {
 
     companion object {
         fun createJwtUser(user: UserEntity): JwtUser {
-            println(user.roles)
             return JwtUser(
                 user.id, user.username,
                 user.firstName, user.lastName,
