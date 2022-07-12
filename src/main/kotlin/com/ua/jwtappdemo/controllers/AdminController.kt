@@ -16,7 +16,7 @@ class AdminController(
     private val userService: UserService
 ) {
     @Secured("ROLE_ADMIN")
-    @GetMapping("/users/{userId}")
+    @GetMapping("/users/user/{userId}")
     fun getUserById(@PathVariable("userId") userId: Long): ResponseEntity<AdminDto> {
         val userFound = userService.findById(userId) ?: return ResponseEntity(HttpStatus.NO_CONTENT)
         val userFoundDto = AdminDto.toDto(userFound)
