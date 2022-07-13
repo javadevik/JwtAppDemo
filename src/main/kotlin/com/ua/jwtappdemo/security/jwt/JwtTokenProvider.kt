@@ -1,9 +1,11 @@
 package com.ua.jwtappdemo.security.jwt
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.exceptions.SignatureVerificationException
+import com.auth0.jwt.interfaces.DecodedJWT
 import com.ua.jwtappdemo.entities.UserEntity
 import com.ua.jwtappdemo.security.JwtUserDetailsService
-import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -28,28 +30,21 @@ class JwtTokenProvider(
     }
 
     fun createToken(user: UserEntity): String {
-        val userId = user.id
-
-        val claims = Jwts.claims().setSubject(userId.toString())
+        val userId = user.id.toString()
 
         val nowTime = clock.millis()
         val validity = nowTime + 3600000
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(Date(nowTime))
-                .setExpiration(Date(validity))
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact()
+        return JWT.create()
+                .withSubject(userId)
+                .withIssuedAt(Date(nowTime))
+                .withExpiresAt(Date(validity))
+                .sign(Algorithm.HMAC256(secret))
     }
 
-    fun getAuthentication(token: String): Authentication? {
-        val userDetails = userDetailsService.loadUserByUserId(getUserId(token)) ?: return null
+    fun getAuthentication(userId: Long): Authentication? {
+        val userDetails = userDetailsService.loadUserByUserId(userId) ?: return null
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
-    }
-
-    fun getUserId(token: String): Long {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body.subject.toLong()
     }
 
     fun resolveToken(request: HttpServletRequest): String? {
@@ -60,16 +55,14 @@ class JwtTokenProvider(
         return null
     }
 
-    fun validateToken(token: String?): Boolean {
-        if (token == null)
-            return false
-
-        val claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
-
-        if (claims.body.expiration.before(Date())) {
-            return false
+    fun verifyToken(token: String?): DecodedJWT? {
+        val jwtVerifier = JWT.require(Algorithm.HMAC256(secret)).build()
+        return token?.let {
+            try {
+                jwtVerifier.verify(token)
+            }catch (e: SignatureVerificationException) {
+                null
+            }
         }
-
-        return true
     }
 }

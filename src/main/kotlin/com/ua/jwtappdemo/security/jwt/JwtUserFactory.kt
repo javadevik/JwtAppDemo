@@ -6,7 +6,6 @@ import com.ua.jwtappdemo.entities.UserEntity
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import java.util.stream.Collectors
-import kotlin.streams.toList
 
 class JwtUserFactory {
 
