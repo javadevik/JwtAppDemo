@@ -8,20 +8,20 @@ import org.testcontainers.containers.PostgreSQLContainer
 import javax.sql.DataSource
 
 @Configuration
-class TestDataSourceConfig {
+class DataSourceConfig {
     companion object {
         @JvmStatic
-        private val dataSourceContainer = PostgreSQLContainer("postgresql:13-alpine")
-                .withExposedPorts(7639)
-                .withDatabaseName("testdb")
-                .withUsername("postgres")
-                .withPassword("root")
-                .apply { start() }
+        private val postgreSQLContainer = PostgreSQLContainer("postgres:13-alpine")
+            .withExposedPorts(7369)
+            .withDatabaseName("fortestingdb")
+            .withUsername("postgres")
+            .withPassword("root")
+            .apply { start() }
     }
 
     @Bean
     fun postgreSQLContainer(): PostgreSQLContainer<*> {
-        return dataSourceContainer
+        return postgreSQLContainer
     }
 
     @Bean

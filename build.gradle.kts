@@ -29,10 +29,13 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.ktor:ktor-auth:1.6.8")
 	implementation("io.ktor:ktor-auth-jwt:1.6.8")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+
 	testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
 	testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
 	testImplementation("org.testcontainers:postgresql:$testcontainersVersion")
