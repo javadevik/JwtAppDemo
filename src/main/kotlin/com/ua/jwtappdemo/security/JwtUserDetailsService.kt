@@ -14,4 +14,9 @@ class JwtUserDetailsService(
         val user = userService.findByUsername(username) ?: return null
         return JwtUserFactory.createJwtUser(user)
     }
+
+    fun loadUserByUserId(userId: Long) : UserDetails? {
+        val user = userService.findById(userId) ?: return null
+        return JwtUserFactory.createJwtUser(user)
+    }
 }

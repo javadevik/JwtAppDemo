@@ -8,13 +8,14 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 
 class JwtTokenFilter(
-    private val jwtTokenProvider: JwtTokenProvider
+        private val jwtTokenProvider: JwtTokenProvider
 ) : GenericFilterBean() {
     override fun doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain) {
         val token = jwtTokenProvider.resolveToken(request as HttpServletRequest)
         if (jwtTokenProvider.validateToken(token)) {
             val authentication = jwtTokenProvider.getAuthentication(token!!)
-            SecurityContextHolder.getContext().authentication = authentication
+            if (authentication != null)
+                SecurityContextHolder.getContext().authentication = authentication
         }
         chain.doFilter(request, response)
     }

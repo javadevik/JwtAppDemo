@@ -1,12 +1,13 @@
 package com.ua.jwtappdemo.security.jwt
 
 import com.ua.jwtappdemo.entities.UserEntity
+import com.ua.jwtappdemo.security.JwtUserDetailsService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 import java.time.Clock
 import java.util.*
@@ -18,7 +19,8 @@ class JwtTokenProvider(
         @Value("\${jwt.security.secret}")
         private var secret: String,
         private val clock: Clock,
-        private val userDetailsService: UserDetailsService
+        @Autowired
+        private val userDetailsService: JwtUserDetailsService
 ) {
     @PostConstruct
     protected fun init() {
@@ -26,9 +28,9 @@ class JwtTokenProvider(
     }
 
     fun createToken(user: UserEntity): String {
-        val username = user.username
+        val userId = user.id
 
-        val claims = Jwts.claims().setSubject(username)
+        val claims = Jwts.claims().setSubject(userId.toString())
 
         val nowTime = clock.millis()
         val validity = nowTime + 3600000
@@ -41,13 +43,13 @@ class JwtTokenProvider(
                 .compact()
     }
 
-    fun getAuthentication(token: String): Authentication {
-        val userDetails = userDetailsService.loadUserByUsername(getUsername(token))
+    fun getAuthentication(token: String): Authentication? {
+        val userDetails = userDetailsService.loadUserByUserId(getUserId(token)) ?: return null
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 
-    fun getUsername(token: String): String {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body.subject
+    fun getUserId(token: String): Long {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body.subject.toLong()
     }
 
     fun resolveToken(request: HttpServletRequest): String? {
