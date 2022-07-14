@@ -1,0 +1,6 @@
+# packeges
+.gradle
+.idea
+
+# files
+gradlew.bat

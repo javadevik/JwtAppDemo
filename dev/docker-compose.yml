@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  web:
+    build: ..
+    ports:
+      - "8000:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/jwtdemodb
+      DB_USER: postgres
+      DB_PASSWORD: root
+      DB_DRIVER: org.postgresql.Driver
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: jwtdemodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root

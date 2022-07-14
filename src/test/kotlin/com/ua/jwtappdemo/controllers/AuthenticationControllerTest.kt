@@ -5,24 +5,22 @@ import com.ua.jwtappdemo.factory.UserFactory
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.test.context.jdbc.Sql
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters
 import org.testcontainers.junit.jupiter.Testcontainers
 
+
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@Sql("/init_db_before_test.sql", executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql("/restore_db_after_test.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 class AuthenticationControllerTest(
-        @Autowired
+    @Autowired
         private val webTestClient: WebTestClient,
-        @Autowired
+    @Autowired
         private val userFactory: UserFactory,
-        @Autowired
+    @Autowired
         private val authFactory: AuthenticationFactory
 ) {
+
     @Test
     fun registrationTest() {
         val response = webTestClient
@@ -36,10 +34,27 @@ class AuthenticationControllerTest(
 
     @Test
     fun loginSuccessTest() {
+        val map = mutableMapOf<String, String>()
+        map["username"] = "test"
+        map["firstName"] = "Test user"
+        map["lastName"] = "Test user"
+        map["email"] = "test@gmail.com"
+        map["password"] = "test"
+
+        webTestClient
+            .post()
+            .uri("/api/auth/registration")
+            .body(BodyInserters.fromValue(map))
+            .exchange()
+
         val response = webTestClient
             .post()
+            .uri("/api/auth/login")
             .body(BodyInserters.fromValue(authFactory.createSuccessLoginStatement()))
             .exchange()
+
+        println(response)
+
         response.expectStatus().isOk
     }
 
@@ -47,6 +62,7 @@ class AuthenticationControllerTest(
     fun loginFailedTest() {
         val response = webTestClient
             .post()
+            .uri("/api/auth/registration")
             .body(BodyInserters.fromValue(authFactory.createFailedLoginStatement()))
             .exchange()
         response.expectStatus().is4xxClientError
